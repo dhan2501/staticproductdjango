@@ -1,0 +1,48 @@
+a.text-purple-500 {
+    color: purple;
+  }
+  a.text-gray-500 {
+    color: gray !important;
+  }
+  ul.space-y-2 .active {
+    color: #fff !important;;
+    
+    font-size: 20px;
+    letter-spacing: 1px;
+  }
+
+  ul.space-y-2 li {
+    list-style: none;
+  }
+  ul.space-y-2 li a {
+    color: #4c4c4c;
+    letter-spacing: 1px;
+    text-decoration: none;
+  }
+  ul.space-y-2 li {
+    background: #f19812;
+    padding: 6px;
+    border-bottom: 2px solid #fff !important;
+  }
+  ul.space-y-2 {
+    padding: 0px;
+  }
+
+  .rating-stars input[type="radio"] {
+    display: none; /* Hide radio buttons */
+}
+
+.rating-stars label {
+    font-size: 2rem;
+    color: #ccc; /* Unfilled star color */
+    cursor: pointer;
+}
+
+.rating-stars input[type="radio"]:checked ~ label i {
+    color: gold; /* Filled star color */
+}
+
+.rating-stars label:hover i,
+.rating-stars label:hover ~ label i {
+    color: gold; /* Hover effect for stars */
+}

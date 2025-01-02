@@ -1,0 +1,14 @@
+<nav>
+    <ul style="list-style: none; display: flex; gap: 5px;">
+        {% for crumb in breadcrumbs %}
+            <li>
+                {% if crumb.url %}
+                    <a href="{{ crumb.url }}">{{ crumb.name }}</a>
+                {% else %}
+                    {{ crumb.name }}
+                {% endif %}
+                {% if not forloop.last %} / {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</nav>

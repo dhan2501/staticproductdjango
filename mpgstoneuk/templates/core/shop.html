@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<style>
+    a.text-gray-500 {
+    color: red;
+}
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <form method="get" action=".">  
+                <div class="input-group mb-4">  
+                  <input type="search" name="query" placeholder="Search here..." aria-describedby="button-addon5" class="form-control">  
+                  <div class="input-group-append">  
+                    <button type="submit" class="btn btn-primary"> <i class="fa fa-search"> </i> </button>  
+                  </div>  
+                </div>  
+            </form>  
+            <h3 class="mt-6 mb-3 uppercase textr-xl">Categories</h3>
+            <ul class="space-y-2">
+                <li><a href="{% url 'shop' %}" class="all_categories {% if not active_category %}active{% endif %}">All categories</a></li>
+                {% for category in categories %}
+                <!-- <li><a href="{% url 'shop' %}?category={{category.slug}}" class="{% if category.slug == active_category %}active{% endif %}">{{ category.category_name }}</a></li> -->
+                <li><a href="{% url 'category_detail' category.slug %}" class="{% if category.slug == active_category %}active{% endif %}">{{ category.category_name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-9">       
+            {% for product in products %}
+            <div class="col-4 float-left">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <!-- <a href="{# % url 'product_detail' product.pk % #}" class="btn btn-primary">Go somewhere</a> -->
+                    <a href="{% url 'product_detail' category_slug=product.category.slug product_slug=product.slug %}" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- <div class="pagination">
+        <span>
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+        <div>
+            {% if page_obj.has_previous %}
+                <a href="?page=1">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <strong>{{ num }}</strong>
+                {% else %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+        </div>
+    </div> -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% endif %}
+    
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+    
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+
+    
+</div>
+{% endblock %}

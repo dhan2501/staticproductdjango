@@ -1,0 +1,139 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 300px;">
+        </div>
+        <div class="col-md-6">
+            <nav>
+                <ul style="list-style: none; display: flex; gap: 5px;">
+                    {% for crumb in breadcrumbs %}
+                        <li>
+                            {% if crumb.url %}
+                                <a href="{{ crumb.url }}">{{ crumb.name }}</a>
+                            {% else %}
+                                {{ crumb.name }}
+                            {% endif %}
+                            {% if not forloop.last %} / {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+            <h1>{{ product.name }}</h1>            
+            <p>{{ product.description }}</p>
+            <p>{{ product.content}}</p>
+            <!-- <a href="/">Back to Product List</a> -->
+
+            <button type="button" class="btn btn-info inquerybutton" data-toggle="modal" data-target="#form">Please call for best price</button>
+        </div>
+    </div>
+    <!-- <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form> -->
+    <!-- <form method="post">
+        {% csrf_token %}
+        {{ form.name.label_tag }}
+        {{ form.name }}
+    
+        {{ form.email.label_tag }}
+        {{ form.email }}
+    
+        {{ form.comment.label_tag }}
+        {{ form.comment }}
+    
+        {{ form.rating.label_tag }}
+        <div class="rating-stars">
+            {% for choice in form.rating %}
+                <label for="{{ choice.id_for_label }}" class="star-label">
+                    {{ choice.tag }}
+                    <i class="fas fa-star"></i>
+                </label>
+            {% endfor %}
+        </div>
+    
+        <button type="submit">Submit</button>
+    </form> -->
+    
+    <h2>Comments</h2>
+    {% for comment in comments %}
+        <div>
+            <strong>{{ comment.name }}</strong> ({{ comment.rating }} Stars)
+            <p>{{ comment.comment }}</p>
+            <small>Posted on {{ comment.created_at }}</small>
+        </div>
+    {% endfor %}
+</div>
+<script>
+//     document.querySelectorAll('.rating-stars label').forEach((label, index, labels) => {
+//     label.addEventListener('mouseover', () => {
+//         labels.forEach((l, i) => {
+//             l.querySelector('i').style.color = i <= index ? 'gold' : '#ccc';
+//         });
+//     });
+//     label.addEventListener('mouseout', () => {
+//         labels.forEach((l) => {
+//             l.querySelector('i').style.color = l.querySelector('input').checked ? 'gold' : '#ccc';
+//         });
+//     });
+//     label.querySelector('input').addEventListener('change', () => {
+//         labels.forEach((l) => {
+//             l.querySelector('i').style.color = l.querySelector('input').checked ? 'gold' : '#ccc';
+//         });
+//     });
+// });
+    	//get Product name
+        $(document).ready(function(){
+		var ProductName = $("h1").text();
+    	$("#product_name").val(ProductName);
+    	//get_product id
+    	let Productid = $(".product_id").text();
+    	$("#productid").val(Productid);
+		});  
+
+</script>
+
+<div class="modal fade" id="form" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" id="exampleModalLabel">Enquiry For Product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      
+
+
+      <form>
+        <div class="modal-body">
+        <div class="form-group">
+            <label for="productname">Product Name</label>
+            <input size="40" class="form-control" maxlength="400" id="product_name" readonly="readonly" aria-invalid="false" value="" type="text" name="product-name">
+        </div>
+          <div class="form-group">
+            <input type="email" class="form-control" id="email1" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">Your information is safe with us.</small>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter your Name">
+          </div>
+          <div class="form-group">
+            <input type="tel" class="form-control" id="phone" placeholder="Enter your Phone Number">
+          </div>
+          <div class="form-group">
+            <textarea  class="form-control" id="message" placeholder="Enter your Message"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-top-0 d-flex justify-content-center">
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
