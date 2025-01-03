@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from mpgstoneuk.models import Product, Category, MenuItem, ProductComment, PagesTitle, Blog, BlogCategory
+from django.db.models import Count
 from django.core.paginator import Paginator
 # from .models import ProductComment
 from .forms import ProductCommentForm
@@ -179,11 +180,15 @@ def contactus(request):
 
 def blogpage(request):
     blogs = Blog.objects.all().order_by('-date_posted')
-    return render(request, 'core/blog.html', {'blogs': blogs})
+    categories = BlogCategory.objects.annotate(blog_count=Count('blogs')).order_by('-blog_count')
+    recent_blogs = Blog.objects.all().order_by('-date_posted')[:5]  # Fetch the 5 most recent blogs
+    return render(request, 'core/blog.html', {'blogs': blogs, 'categories': categories,'recent_blogs': recent_blogs,})
 
 def blog_detail(request, slug):
     blog = get_object_or_404(Blog, slug=slug)
+    categories = BlogCategory.objects.annotate(blog_count=Count('blogs')).order_by('-blog_count')
+    recent_blogs = Blog.objects.all().order_by('-date_posted')[:5]  # Fetch the 5 most recent blogs
     # Increment total views
     blog.total_views += 1
     blog.save()
-    return render(request, 'core/blog_detail.html', {'blog': blog})
+    return render(request, 'core/blog_detail.html', {'blog': blog, 'categories': categories,'recent_blogs': recent_blogs,})
