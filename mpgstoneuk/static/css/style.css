@@ -5,9 +5,7 @@ a.text-purple-500 {
     color: gray !important;
   }
   ul.space-y-2 .active {
-    color: #fff !important;;
-    
-    font-size: 20px;
+    color: #fff !important;
     letter-spacing: 1px;
   }
 

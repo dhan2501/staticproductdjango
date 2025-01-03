@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Category, Product, Logo, MenuItem, SocialMediaLink, ProductComment, PagesTitle
+from .models import Category, Product, Logo, MenuItem, SocialMediaLink, ProductComment, PagesTitle, BlogCategory, Blog
 # Register your models here.
 
 # admin.site.register(Category)
@@ -36,3 +36,16 @@ class SocialMediaLinkAdmin(admin.ModelAdmin):
 @admin.register(PagesTitle)
 class PageAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'meta_title')
+
+
+@admin.register(BlogCategory)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
+    prepopulated_fields = {'slug': ('name',)}
+
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'date_posted', 'total_views')
+    prepopulated_fields = {'slug': ('title',)}
+    list_filter = ('category', 'date_posted')

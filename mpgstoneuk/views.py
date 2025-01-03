@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
-from mpgstoneuk.models import Product, Category, MenuItem, ProductComment, PagesTitle
+from mpgstoneuk.models import Product, Category, MenuItem, ProductComment, PagesTitle, Blog, BlogCategory
 from django.core.paginator import Paginator
 # from .models import ProductComment
 from .forms import ProductCommentForm
@@ -52,7 +52,10 @@ def shop(request, category_slug=None):
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
+    breadcrumbs = [
+        {'title': 'Home', 'url': '/'},
+        {'title': 'Shop', 'url': '/shop/'},  # Link to the Shop page
+    ]
     context = {
         'products':products, 
         'categories':categories,
@@ -61,6 +64,7 @@ def shop(request, category_slug=None):
         'title': 'Shop',
         'meta_title': 'Shop',
         'meta_description': 'Contact us for more information or support.',
+        'breadcrumbs' :breadcrumbs
     }
     return render(request, 'core/shop.html',  context)
 
@@ -112,7 +116,10 @@ def category_detail(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
     products = category.product.all()  # Get all products in this category
     categories = Category.objects.all()
-    
+    paginator = Paginator(products, 2)  # Show 10 products per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     # context = {
     #     'title': 'About Us',
     #     'meta_title': 'About Us',
@@ -125,6 +132,7 @@ def category_detail(request, category_slug):
 
     context = {
         'category': category, 
+        'page_obj': page_obj,
         'products': products, 
         'categories':categories, 
         # 'meta_title': category.meta_title if category.meta_title else category.category_name,
@@ -135,11 +143,17 @@ def category_detail(request, category_slug):
 
 
 def aboutus(request):
+    breadcrumbs = [
+        {'title': 'Home', 'url': '/'},
+        {'title': 'About Us', 'url': '/about-us/'},  # Link to the Shop page
+    ]
     context = {
+        'breadcrumbs' : breadcrumbs,
         'title': 'About Us',
         'meta_title': 'About Us',
         'meta_description': 'Contact us for more information or support.',
     }
+    
     return render(request, 'core/aboutus.html', context)
 
 
@@ -154,3 +168,22 @@ def dynamic_page(request, slug):
 
     page = get_object_or_404(PagesTitle, slug=slug)
     return render(request, 'core/base.html', {'title': page.title, 'content': page.content})
+
+def contactus(request):
+    return render(request, 'core/contactus.html')
+
+
+# def blogpage(request):
+#     return render(request, 'core/blog.html')
+
+
+def blogpage(request):
+    blogs = Blog.objects.all().order_by('-date_posted')
+    return render(request, 'core/blog.html', {'blogs': blogs})
+
+def blog_detail(request, slug):
+    blog = get_object_or_404(Blog, slug=slug)
+    # Increment total views
+    blog.total_views += 1
+    blog.save()
+    return render(request, 'core/blog_detail.html', {'blog': blog})

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mpgstoneuk.views import frontpage, shop, product, product_detail, category_detail, aboutus,dynamic_page
+from mpgstoneuk.views import frontpage, shop, product, product_detail, category_detail, aboutus,dynamic_page, contactus, blogpage, blog_detail
 from django.conf import settings
 from django.conf.urls.static import static
 # from . import views
@@ -25,6 +25,9 @@ urlpatterns = [
     path('', frontpage, name='frontpage'),
     path('about-us/', aboutus, name='aboutus'),
     path('shop/', shop, name='shop'),
+    path('contact-us/', contactus, name='contactus'),
+    path('blog/', blogpage, name='blog'),
+    path('blog/<slug:slug>/', blog_detail, name='blog_detail'),
     # path('categories/<slug:category_slug>/', shop, name='shop'),
     path('product/', product, name='product'),
     # path('product/<int:pk>/', product_detail, name='product_detail'),
