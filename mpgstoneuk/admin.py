@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Category, Product, Logo, MenuItem, SocialMediaLink, ProductComment
+from .models import Category, Product, Logo, MenuItem, SocialMediaLink, ProductComment, PagesTitle
 # Register your models here.
 
 # admin.site.register(Category)
@@ -31,3 +31,8 @@ class SocialMediaLinkAdmin(admin.ModelAdmin):
     list_display = ('platform', 'url', 'location', 'is_active')
     list_filter = ('location', 'is_active')
     search_fields = ('platform', 'url')
+
+
+@admin.register(PagesTitle)
+class PageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'slug', 'meta_title')

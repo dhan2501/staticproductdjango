@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
-from mpgstoneuk.models import Product, Category, MenuItem, ProductComment
+from mpgstoneuk.models import Product, Category, MenuItem, ProductComment, PagesTitle
 from django.core.paginator import Paginator
 # from .models import ProductComment
 from .forms import ProductCommentForm
@@ -9,8 +9,14 @@ from django.urls import reverse
 
 def frontpage(request):
     products = Product.objects.all()[0:8]
-
-    return render(request, 'core/frontpage.html', {'products':products, 'title': 'My Dynamic Page Title'})
+    context = {
+        'title': 'Home Page',
+        'meta_title': 'Home',
+        'meta_description': 'Contact us for more information or support.',
+        'products':products, 
+        'title': 'My Dynamic Page Title'
+    }
+    return render(request, 'core/frontpage.html', context)
 
 
 def home(request):
@@ -52,6 +58,9 @@ def shop(request, category_slug=None):
         'categories':categories,
         'active_category' : active_category,
         'page_obj': page_obj,
+        'title': 'Shop',
+        'meta_title': 'Shop',
+        'meta_description': 'Contact us for more information or support.',
     }
     return render(request, 'core/shop.html',  context)
 
@@ -70,6 +79,7 @@ def product_detail(request, category_slug, product_slug):
 
     # product = get_object_or_404(Product, id=product_id)  # Assuming a Product model exists
     comments = ProductComment.objects.filter(product=product).order_by('-created_at')  # Adjust to associate with the product
+    
     if request.method == "POST":
         form = ProductCommentForm(request.POST)
         if form.is_valid():
@@ -92,16 +102,55 @@ def product_detail(request, category_slug, product_slug):
         {'name': category.category_name, 'url': f'/categories/{category.slug}/'},
         {'name': product.name, 'url': None},  # Current product, no link 
     ]
-    return render(request, 'core/product_detail.html', {'product': product, 'category': category, 'breadcrumbs': breadcrumbs, 'comments': comments, 'form': form})
+
+
+    
+    return render(request, 'core/product_detail.html', {'product': product, 'category': category, 'breadcrumbs': breadcrumbs, 'comments': comments, 'form': form, 'meta_title': product.meta_title if product.meta_title else product.name,
+        'meta_description': product.meta_description if product.meta_description else product.description[:150],})
 # Category Page
 def category_detail(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
     products = category.product.all()  # Get all products in this category
     categories = Category.objects.all()
-    return render(request, 'core/category_detail.html', {'category': category, 'products': products, 'categories':categories})
+    
+    # context = {
+    #     'title': 'About Us',
+    #     'meta_title': 'About Us',
+    #     'meta_description': 'Contact us for more information or support.',
+    #     'category': category, 
+    #     'products': products, 
+    #     'categories':categories
+    # }
+    # return render(request, 'core/category_detail.html', {'category': category, 'products': products, 'categories':categories})
+
+    context = {
+        'category': category, 
+        'products': products, 
+        'categories':categories, 
+        # 'meta_title': category.meta_title if category.meta_title else category.category_name,
+        'meta_title': category.meta_title if category.meta_title else None,
+        'meta_description': category.meta_description if category.meta_description else None,
+    }
+    return render(request, 'core/category_detail.html', context)
 
 
 def aboutus(request):
-    return render(request, 'core/aboutus.html')
+    context = {
+        'title': 'About Us',
+        'meta_title': 'About Us',
+        'meta_description': 'Contact us for more information or support.',
+    }
+    return render(request, 'core/aboutus.html', context)
 
 
+def dynamic_page(request, slug):
+    # page = get_object_or_404(PagesTitle, slug=slug)
+    # return render(request, 'core/base.html', {
+    #     'title': page.title,
+    #     'meta_title': page.meta_title if page.meta_title else page.title,
+    #     'meta_description': page.meta_description,
+    #     'content': page.content,
+    # })
+
+    page = get_object_or_404(PagesTitle, slug=slug)
+    return render(request, 'core/base.html', {'title': page.title, 'content': page.content})

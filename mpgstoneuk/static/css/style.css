@@ -46,3 +46,87 @@ a.text-purple-500 {
 .rating-stars label:hover ~ label i {
     color: gold; /* Hover effect for stars */
 }
+
+img.card-img-top {
+  height: 250px;
+}
+a.product-title {
+  color: #000;
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-size: 18px;
+  text-transform: capitalize;
+}
+.card-body.listproduct {
+  text-align: center;
+}
+
+.viewproduct{
+  width: 100%;
+}
+
+.viewproduct {
+  width: 100%;
+  background: #ffffff;
+  color: #f19812;
+  border: 2px solid #f19812;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+a.btn.btn-primary.viewproduct:hover {
+  background: #f19812;
+  color: #fff;
+  border: 2px solid #f19812;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.input-group-append button {
+  background: #f19812;
+  border: none;
+}
+
+
+
+
+/* Center the pagination controls */
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+.pagination li {
+    margin: 0 5px;
+}
+.pagination a, .pagination span {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    color: #333;
+}
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+.pagination .active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+.pagination .disabled {
+    color: #aaa;
+}
+
+li.page-item.active span {
+  background-color: #f19812 !important;
+  color: white;
+  border-color: #f19812 !important;
+}
+.pagination .active {
+  background-color: #f19812;
+  color: white;
+  border-color: #f19812;
+}

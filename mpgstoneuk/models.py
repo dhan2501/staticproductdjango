@@ -7,6 +7,9 @@ from django.core.exceptions import ValidationError
 class Category(models.Model):
     category_name = models.CharField(max_length=250)
     slug = models.SlugField()
+    description = models.TextField(blank=True, null=True)
+    meta_title = models.CharField(max_length=255, help_text="SEO meta title", blank=True, null=True)
+    meta_description = models.TextField(help_text="SEO meta description", blank=True, null=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -21,6 +24,8 @@ class Product(models.Model):
     slug = models.SlugField()
     image = models.ImageField(upload_to='products/', default='10')
     description = models.TextField(blank=True, null=True)
+    meta_title = models.CharField(max_length=255, help_text="SEO meta title", blank=True, null=True)
+    meta_description = models.TextField(help_text="SEO meta description", blank=True, null=True)
     create_at = models.DateTimeField(auto_now_add=True)
 
     class Meta: 
@@ -122,3 +127,13 @@ class ProductComment(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.product.name} ({self.rating} stars)" 
+    
+
+class PagesTitle(models.Model):
+    slug = models.SlugField(unique=True, help_text="Unique URL identifier")
+    title = models.CharField(max_length=255, help_text="Page title")
+    meta_title = models.CharField(max_length=255, help_text="Meta title for SEO", blank=True)
+    meta_description = models.TextField(help_text="Meta description for SEO", blank=True)
+    content = models.TextField(help_text="Page content")
+    def __str__(self):
+        return self.title
