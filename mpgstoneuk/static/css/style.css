@@ -130,3 +130,6 @@ li.page-item.active span {
   color: white;
   border-color: #f19812;
 }
+.shoppagnination {
+  margin: 50px;
+}

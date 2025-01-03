@@ -30,7 +30,7 @@ urlpatterns = [
     # path('product/<int:pk>/', product_detail, name='product_detail'),
     path('categories/<slug:category_slug>/', category_detail, name='category_detail'),
     path('product/<slug:category_slug>/<slug:product_slug>/', product_detail, name='product_detail'),
-    path('<slug:slug>/', dynamic_page, name='dynamic_page'),
+    # path('<slug:slug>/', dynamic_page, name='dynamic_page'),
     path('admin/', admin.site.urls),
 ]
 
