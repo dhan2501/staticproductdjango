@@ -182,7 +182,7 @@ def blogpage(request):
     blogs = Blog.objects.all().order_by('-date_posted')
     categories = BlogCategory.objects.annotate(blog_count=Count('blogs')).order_by('-blog_count')
     recent_blogs = Blog.objects.all().order_by('-date_posted')[:5]  # Fetch the 5 most recent blogs
-    paginator = Paginator(blogs, 1)  # Show 5 blogs per page
+    paginator = Paginator(blogs, 5)  # Show 5 blogs per page
 
     page_number = request.GET.get('page')  # Get the page number from the request
     page_obj = paginator.get_page(page_number)
@@ -192,7 +192,24 @@ def blog_detail(request, slug):
     blog = get_object_or_404(Blog, slug=slug)
     categories = BlogCategory.objects.annotate(blog_count=Count('blogs')).order_by('-blog_count')
     recent_blogs = Blog.objects.all().order_by('-date_posted')[:5]  # Fetch the 5 most recent blogs
+    try:
+        previous_post = blog.get_previous_by_date_posted()
+    except Blog.DoesNotExist:
+        previous_post = None
+
+    try:
+        next_post = blog.get_next_by_date_posted()
+    except Blog.DoesNotExist:
+        next_post = None
     # Increment total views
     blog.total_views += 1
     blog.save()
-    return render(request, 'core/blog_detail.html', {'blog': blog, 'categories': categories,'recent_blogs': recent_blogs,})
+    context = {
+        'previous_post': previous_post,
+        'next_post': next_post,
+        'blog': blog, 
+        'categories': categories,
+        'recent_blogs': recent_blogs,
+    }
+    # return render(request, 'core/blog_detail.html', {'blog': blog, 'categories': categories,'recent_blogs': recent_blogs,})
+    return render(request, 'core/blog_detail.html', context)
