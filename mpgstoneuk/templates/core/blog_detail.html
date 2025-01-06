@@ -250,44 +250,20 @@
                    </ul>
                 </aside>
                 <aside class="single_sidebar_widget popular_post_widget">
-                   <h3 class="widget_title">Recent Post</h3>
-                   <div class="media post_item">
-                      <img src="{% static 'img/post/post_1.png' %}" alt="post">
+                  <h3 class="widget_title">Recent Post</h3>
+                  {% for recent_blog in recent_blogs %}
+                  <div class="media post_item">
+                      <img src="{{ recent_blog.image.url }}" alt="{{ recent_blog.title }}" style="width: 100px;height: 63px;">
                       <div class="media-body">
-                         <a href="single-blog.html">
-                            <h3>From life was you fish...</h3>
-                         </a>
-                         <p>January 12, 2019</p>
+                          <a href="{% url 'blog_detail' recent_blog.slug %}">
+                              <h3>{{ recent_blog.title }}</h3>
+                          </a>
+                          <p>January 12, 2019</p>
                       </div>
-                   </div>
-                   <div class="media post_item">
-                      <img src="{% static 'img/post/post_2.png' %}" alt="post">
-                      <div class="media-body">
-                         <a href="single-blog.html">
-                            <h3>The Amazing Hubble</h3>
-                         </a>
-                         <p>02 Hours ago</p>
-                      </div>
-                   </div>
-                   <div class="media post_item">
-                      <img src="{% static 'img/post/post_3.png' %}" alt="post">
-                      <div class="media-body">
-                         <a href="single-blog.html">
-                            <h3>Astronomy Or Astrology</h3>
-                         </a>
-                         <p>03 Hours ago</p>
-                      </div>
-                   </div>
-                   <div class="media post_item">
-                      <img src="{% static 'img/post/post_4.png' %}" alt="post">
-                      <div class="media-body">
-                         <a href="single-blog.html">
-                            <h3>Asteroids telescope</h3>
-                         </a>
-                         <p>01 Hours ago</p>
-                      </div>
-                   </div>
-                </aside>
+                  </div>
+                  {% endfor %}
+                  
+              </aside>
                 <aside class="single_sidebar_widget tag_cloud_widget">
                    <h4 class="widget_title">Tag Clouds</h4>
                    <ul class="list">

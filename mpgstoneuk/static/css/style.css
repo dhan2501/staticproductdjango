@@ -131,3 +131,6 @@ li.page-item.active span {
 .shoppagnination {
   margin: 50px;
 }
+.blog-pagination .page-link {
+  width: 70px !important;
+}

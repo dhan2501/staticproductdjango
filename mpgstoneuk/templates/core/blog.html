@@ -34,12 +34,14 @@
 
                     
                     <nav class="blog-pagination justify-content-center d-flex">
-                        <ul class="pagination">
+                        <!-- <ul class="pagination">
+                            {% if page_obj.has_previous %}
                             <li class="page-item">
                                 <a href="#" class="page-link" aria-label="Previous">
                                     <i class="ti-angle-left"></i>
                                 </a>
                             </li>
+                            {% endif %}
                             <li class="page-item">
                                 <a href="#" class="page-link">1</a>
                             </li>
@@ -51,8 +53,32 @@
                                     <i class="ti-angle-right"></i>
                                 </a>
                             </li>
-                        </ul>
-                    </nav>
+                        </ul> -->
+                    
+
+<!-- Pagination Links -->
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li><a href="?page=1">First</a></li>
+    <li><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+{% endif %}
+
+{% for num in page_obj.paginator.page_range %}
+    {% if num == page_obj.number %}
+        <li><a href="?page={{ num }}" class="active">{{ num }}</a></li>
+    {% else %}
+        <li><a href="?page={{ num }}">{{ num }}</a></li>
+    {% endif %}
+{% endfor %}
+
+{% if page_obj.has_next %}
+    <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+    <li><a href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+{% endif %}
+</ul>
+</nav>
+
+
                 </div>
             </div>
             <div class="col-lg-4">
@@ -95,9 +121,9 @@
                         <h3 class="widget_title">Recent Post</h3>
                         {% for recent_blog in recent_blogs %}
                         <div class="media post_item">
-                            <img src="{{ recent_blog.image.url }}" alt="{{ recent_blog.title }}">
+                            <img src="{{ recent_blog.image.url }}" alt="{{ recent_blog.title }}" style="width: 100px;height: 63px;">
                             <div class="media-body">
-                                <a href="{% url 'blog' recent_blog.slug %}">
+                                <a href="{% url 'blog_detail' recent_blog.slug %}">
                                     <h3>{{ recent_blog.title }}</h3>
                                 </a>
                                 <p>January 12, 2019</p>
